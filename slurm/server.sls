@@ -5,6 +5,17 @@ include:
   - slurm.energy
   - slurm.topology
 
+slurm_server_pkg:
+  pkg.installed:
+    - name: {{ slurm.pkgSlurmServer }}
+    - pkgs:
+      - {{ slurm.pkgSlurmServer }}
+      {%  if salt['pillar.get']('slurm:AuthType') == 'munge' %}
+      - {{ slurm.pkgSlurmMuge }}
+      {% endif %}
+      - {{ slurm.pkgSlurmPlugins }}
+    #- refresh: True
+
 server_log_file:
   file.managed:
     - name: {{ salt['pillar.get']('slurm:SlurmctldLogFile','/var/log/slurm/slurmctld.log') }}
@@ -36,6 +47,7 @@ slurm_server:
     - name: {{ slurm.scontrol }} reconfigure
     - require:
       - file: {{slurm.etcdir}}/{{ slurm.config }}
+      - pkg: slurm_server_pkg
     - onchanges:
       - file: {{slurm.etcdir}}/{{ slurm.config }}
 

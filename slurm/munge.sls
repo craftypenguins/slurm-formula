@@ -22,7 +22,7 @@ slurm_munge_key64:
     - user: munge
     - group: munge
     - mode: '0400'
-    - contents_pillar: slurmConf.MungeKey64
+    - contents_pillar: slurm:MungeKey64
     - require:
         - pkg: slurm_munge
   cmd.wait:
@@ -35,6 +35,8 @@ slurm_munge_key:
     - requre:
         - cmd: slurm_munge_key
     - replace: false
+    - user: munge
+    - group: munge
     - mode: '0400'
 {%- else %}
 slurm_munge_key:

@@ -1,4 +1,8 @@
 {% from "slurm/map.jinja" import slurm with context %}
+
+include:
+  - slurm.node
+
 #only if cgrups is active on pillars it is deffined
 {% if  salt['pillar.get']('slurm:UseCgroup','False') == True %}
 slurm_cgroup:

@@ -13,16 +13,12 @@ slurm_client:
       - {{ slurm.pkgSlurmPlugins }}
     - refresh: True
 
-slurm_cgroups_config:
-  file.managed:
-    - name: {{slurm.etcdir}}/cgroup.conf
+slurm_config_directory:
+  file.directory:
+    - name: {{slurm.etcdir}}
     - user: slurm
     - group: root
-    - mode: '644'
-    - template: jinja
-    - source: salt://slurm/files/cgroup.conf
-    - context:
-        slurm: {{ slurm }}
+
 slurm_config:
   file.managed:
     - name: {{slurm.etcdir}}/{{ slurm.config }}
@@ -31,6 +27,8 @@ slurm_config:
     - mode: '644'
     - template: jinja 
     - source: salt://slurm/files/slurm.conf
+    - require:
+        - file: slurm_config_directory
     - context:
         slurm: {{ slurm }}
   user.present:
@@ -65,6 +63,9 @@ slurm_gres_conf:
     - mode: '644'
     - template: jinja
     - source: salt://slurm/files/gres.conf
+    - require:
+        - file: slurm_config_directory
+
 slurm_logdir:
   file.directory:
     - name: {{ slurm.logdir }}
