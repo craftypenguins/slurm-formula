@@ -72,3 +72,10 @@ slurm_logdir:
     - user: slurm
     - group: slurm
     - mode: '0755'
+
+slurm_spoold:
+  file.directory:
+    - name: {{ slurm.slurmdspool }}
+    - user: slurm
+    - group: slurm
+    - mode: '0755'
