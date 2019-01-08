@@ -33,7 +33,7 @@ slurm_munge_key:
   file.managed:
     - name: /etc/munge/munge.key
     - requre:
-        - cmd: slurm_munge_key
+        - cmd: slurm_munge_key64
     - replace: false
     - user: munge
     - group: munge
